@@ -44,11 +44,11 @@
 
 # Getting all the Instance ID generated using the variable created
     - name: collecting Instance id from the instance created
-      debug: msg="{{ ec2_instance_resource_output.tagged_instances | map(attribute='id') }}"
+      debug: msg="{{ ec2_instance_resource_output.tagged_instances | map(attribute='id') | list }}"
 
 # Getting all the public ip generated using the variable created
     - name: collecting public ip from the instance created
-      debug: msg="{{ ec2_instance_resource_output.tagged_instances | map(attribute='public_ip') }}"
+      debug: msg="{{ ec2_instance_resource_output.tagged_instances | map(attribute='public_ip') | list }}"
 
 
   rescue:
