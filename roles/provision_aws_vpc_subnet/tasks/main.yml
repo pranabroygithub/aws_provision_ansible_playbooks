@@ -7,6 +7,7 @@
       ec2_vpc_subnet:
         aws_access_key: "{{ aws_access_key_id }}" 
         aws_secret_key: "{{ aws_secret_key_id }}"
+        region: "{{ var_vpc_subnet_region }}"
         state: "{{var_subnet_state}}"
         vpc_id: "{{ var_vpc_id }}"
         cidr: "{{var_subnet_cidr}}"
