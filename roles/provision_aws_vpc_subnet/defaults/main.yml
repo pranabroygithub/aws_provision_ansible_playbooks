@@ -2,6 +2,6 @@
 # defaults file for provision_aws_vpc_subnet
 var_subnet_name: pranab_test_vpv_subnet_ansible
 var_subnet_state: present
-var_subnet_cidr: 172.31.128.0/20
+var_subnet_cidr: 10.0.0.0/24
 var_subnet_availibility_zone: ap-south-1a
 var_vpc_subnet_region: ap-south-1

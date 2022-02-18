@@ -1,0 +1,31 @@
+---
+# This task will provision aws route table with user inputs present in defaults/main.yaml file
+# storing the Output of the resource created into a variable. 
+- block:
+    - name: Set up public subnet route table
+      ec2_vpc_route_table:
+        aws_access_key: "{{ var_aws_access_key_id }}" 
+        aws_secret_key: "{{ var_aws_secret_key_id }}"
+        vpc_id: "{{ var_vpc_id }}"
+        region: "{{ var_route_table_region }}"
+        tags: "{{ var_route_table_tags }}"
+        subnets:
+          - "{{ var_vpc_subnet_id }}"
+        routes:
+          - dest: "{{ var_route_table_destination}}"
+            gateway_id: "{{ var_igw_gateway_id }}"
+      register: var_public_route_table_output
+
+# Task to Display the output of the resource created into the console
+    - name: display the route table info
+      debug: msg="{{ var_public_route_table_output }}"
+
+  rescue:
+
+# Handling Error by displaying error message
+  - name: Display Error message
+    debug: msg="creating AWS route table failed"
+
+# Stopping the play for the current host
+  - name: End the play for hosts
+    meta: end_host

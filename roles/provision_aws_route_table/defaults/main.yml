@@ -1,0 +1,7 @@
+---
+# defaults file for roles/provision_aws_route_table
+
+var_route_table_region: ap-south-1
+var_route_table_tags:
+  Name: pranab_route_table
+var_route_table_destination: 0.0.0.0/0

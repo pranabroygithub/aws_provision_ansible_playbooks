@@ -2,7 +2,7 @@
 # defaults file for provision_aws_vpc
 
 var_vpc_name: pranab_test_vpc_from_ansible
-var_vpc_cidr_block: 172.31.0.0/16 
+var_vpc_cidr_block: 10.0.0.0/16
 var_vpc_region: ap-south-1 
 var_vpc_tags: 
   web: app

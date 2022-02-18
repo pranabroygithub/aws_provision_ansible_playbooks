@@ -10,8 +10,8 @@
         vpc_id: "{{ var_resource_output.vpc.id }}"
         region: "{{var_vpc_region}}"
         tags: "{{ var_security_group_tags}}"
-        aws_access_key: "{{ aws_access_key_id }}" 
-        aws_secret_key: "{{ aws_secret_key_id }}"
+        aws_access_key: "{{ var_aws_access_key_id }}" 
+        aws_secret_key: "{{ var_aws_secret_key_id }}"
         rules:
           - proto: tcp
             from_port: 80
@@ -21,7 +21,7 @@
           - proto: tcp
             from_port: 22
             to_port: 22
-            cidr_ip: 10.0.0.0/8
+            cidr_ip: 0.0.0.0/0
             rule_desc: allow on port 22
         rules_egress:
           - proto: tcp

@@ -5,8 +5,8 @@
 # storing the Output of the resource created into a variable.  
     - name: Create subnet
       ec2_vpc_subnet:
-        aws_access_key: "{{ aws_access_key_id }}" 
-        aws_secret_key: "{{ aws_secret_key_id }}"
+        aws_access_key: "{{ var_aws_access_key_id }}" 
+        aws_secret_key: "{{ var_aws_secret_key_id }}"
         region: "{{ var_vpc_subnet_region }}"
         state: "{{var_subnet_state}}"
         vpc_id: "{{ var_vpc_id }}"
@@ -38,3 +38,6 @@
 # Stopping the play for the current host
     - name: End the play for hosts
       meta: end_host
+
+
+

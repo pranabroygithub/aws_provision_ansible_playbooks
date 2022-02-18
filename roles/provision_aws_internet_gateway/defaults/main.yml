@@ -1,0 +1,6 @@
+---
+# defaults file for roles/provision_aws_internet_gateway
+
+var_igw_state: present
+var_igw_tags:
+  Name: pranab-gateway

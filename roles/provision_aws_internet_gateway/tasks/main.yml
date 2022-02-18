@@ -1,0 +1,32 @@
+---
+# This task will provision aws internet gateway with user inputs present in defaults/main.yaml file
+# storing the Output of the resource created into a variable.
+- block:
+    - name: Create a new igw attached to a specific VPC
+      ec2_vpc_igw:
+        aws_access_key: "{{ var_aws_access_key_id }}" 
+        aws_secret_key: "{{ var_aws_secret_key_id }}"
+        tags: "{{ var_igw_tags }}"
+        vpc_id: "{{ var_vpc_id }}"
+        state: "{{ var_igw_state }}"
+      register: var_igw_resource_output
+
+# Task to Display the output of the resource created into the console
+    - name : display the output of gateway resource
+      debug: msg="{{ var_igw_resource_output }}"
+
+
+# Assign gateway ID generated in a variable
+    - name: collecting gateway id from the instance created
+      set_fact:
+        var_igw_gateway_id: "{{ var_igw_resource_output.gateway_id }}"
+
+  rescue:
+
+# Handling Error by displaying error message
+  - name: Display Error message
+    debug: msg="creating AWS Subnet failed"
+
+# Stopping the play for the current host
+  - name: End the play for hosts
+    meta: end_host

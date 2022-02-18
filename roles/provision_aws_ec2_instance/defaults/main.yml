@@ -5,8 +5,11 @@ var_ec2_instance_region: ap-south-1
 var_ec2_instance_key_pair_name: pranab-ansible-ec2
 var_ec2_instance_type: t2.micro
 var_ec2_instance_image_id: ami-0c6615d1e95c98aca
-var_ec2_instance_group_name: pranab_ansible_group
-var_ec2_instance_count: 2
+# var_ec2_instance_group_name: pranab_ansible_group
+# var_ec2_instance_count: 2
+var_exact_count: 1
 var_ec2_instance_tenacy: default
 var_ec2_instance_tags:
   Name: pranab_ec2_instance_from_ansible
+
+var_ip_list: []

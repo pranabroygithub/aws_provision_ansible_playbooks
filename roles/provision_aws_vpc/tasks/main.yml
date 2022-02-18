@@ -2,10 +2,10 @@
 # This task will provision AWS VPC with user inputs present in defaults/main.yaml file
 # storing the Output of the resource created into a variable.
 - block:
-    - name: create a VPC with dedicated tenancy and a couple of tags
+    - name: create a VPC resource
       ec2_vpc_net:
-        aws_access_key: "{{ aws_access_key_id }}" 
-        aws_secret_key: "{{ aws_secret_key_id }}"
+        aws_access_key: "{{ var_aws_access_key_id }}" 
+        aws_secret_key: "{{ var_aws_secret_key_id }}"
         name: "{{ var_vpc_name }}"
         cidr_block: "{{var_vpc_cidr_block}}"
         region: "{{var_vpc_region}}"
@@ -16,7 +16,7 @@
       register: var_resource_output
     
 # Task to Display the output of the resource created into the console
-    - name : display the output of the resource_output
+    - name : display vpc resource info
       debug: msg="{{ var_resource_output }}"
 
 # Assigning vpc id into a variable
@@ -25,7 +25,7 @@
         var_vpc_id: "{{var_resource_output.vpc.id}}"
 
 # Display the vpc id into the console
-    - name : display the output of the resource_output
+    - name : display vpc id
       debug: msg="{{ var_vpc_id }}"
 
   rescue:
@@ -37,3 +37,6 @@
 # Stopping the play for the current host
     - name: End the play for hosts
       meta: end_host
+
+
+
