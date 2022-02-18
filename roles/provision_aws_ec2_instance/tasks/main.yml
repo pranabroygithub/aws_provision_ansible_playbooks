@@ -1,0 +1,61 @@
+---
+- block:
+# This task will provision Ec2 instance with user inputs present in defaults/main.yaml file
+# storing the Output of the resource created into a variable.  
+    - name: Create new ec2 instance
+      ec2:
+        aws_access_key: "{{ aws_access_key_id }}" 
+        aws_secret_key: "{{ aws_secret_key_id }}"
+        key_name: "{{var_ec2_instance_key_pair_name}}"
+        instance_type: "{{ var_ec2_instance_type }}"
+        region: "{{ var_ec2_instance_region }}"
+        image: "{{ var_ec2_instance_image_id }}"
+        wait: yes
+        # group: "{{ var_ec2_instance_group_name }}"
+        group_id: "{{var_ec2_instance_group_id }}"
+        count: "{{ var_ec2_instance_count }}"
+        instance_tags: "{{ var_ec2_instance_tags}}"
+        vpc_subnet_id: "{{ var_vpc_subnet_id }}"
+        assign_public_ip: yes
+        tenancy: "{{ var_ec2_instance_tenacy}}"
+      register: ec2_instance_resource_output
+
+# Task to Display the output of the resource created into the console
+    - name: Display info of instance created
+      debug: msg="{{ ec2_instance_resource_output }}"
+
+# Getting all the Instance ID generated using the variable created
+    - name: collecting Instance id from the instance created
+      debug: msg="{{ ec2_instance_resource_output.instances | map(attribute='id') }}"
+
+# Getting all the public ip generated using the variable created
+    - name: collecting public ip from the instance created
+      debug: msg="{{ ec2_instance_resource_output.instances | map(attribute='public_ip') }}"
+
+
+  rescue:
+
+# Handling Error by displaying error message
+    - name: Display Error message
+      debug: msg="creating AWS Ec2 instance failed"
+    
+# Stopping the play for the current host
+    - name: End the play for hosts
+      meta: end_host
+
+
+
+
+# - block:
+#     - ec2_instance_info:
+#         instance_ids:
+#           - i-0c34f5404d9a68055
+#           - i-02a6e566b1d08e7a2
+
+#       register: output
+
+#     - debug: msg="{{ output.instances | map(attribute='network_interfaces') | flatten(1) | map(attribute='private_ip_addresses') | flatten | map(attribute='association') | map(attribute='public_dns_name')}}"
+
+#   rescue:
+#     - name: Display error message
+#       debug: msg="Error in parsing the query"

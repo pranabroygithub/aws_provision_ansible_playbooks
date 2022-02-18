@@ -1,0 +1,7 @@
+---
+# defaults file for provision_aws_ec2_security_group
+
+var_security_group_name: pranab_test_security_group_anisble
+var_security_group_description: pranab_test_security_group_description
+var_security_group_tags:
+  Name: pranab_security_group

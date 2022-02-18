@@ -1,0 +1,39 @@
+---
+
+- block:
+# This task will provision Vpc subnet with user inputs present in defaults/main.yaml file
+# storing the Output of the resource created into a variable.  
+    - name: Create subnet
+      ec2_vpc_subnet:
+        aws_access_key: "{{ aws_access_key_id }}" 
+        aws_secret_key: "{{ aws_secret_key_id }}"
+        state: "{{var_subnet_state}}"
+        vpc_id: "{{ var_vpc_id }}"
+        cidr: "{{var_subnet_cidr}}"
+        tags:
+          Name: "{{var_subnet_name}}"
+        az: "{{var_subnet_availibility_zone}}"
+      register: var_subnet_resource_output
+
+# Task to Display the output of the resource created into the console
+    - name : display the output of the resource_output
+      debug: msg="{{ var_subnet_resource_output }}"
+
+# Assign subnet id into a variable
+    - name: create var_vpc_subnet_id variable and assign subnet_id to it
+      set_fact:
+        var_vpc_subnet_id: "{{var_subnet_resource_output.subnet.id}}"
+
+# Display the subnet id into the console 
+    - name : display the output of the subnet id
+      debug: msg="{{ var_vpc_subnet_id }}"
+  
+  rescue:
+
+# Handling Error by displaying error message
+    - name: Display Error message
+      debug: msg="creating AWS Subnet failed"
+
+# Stopping the play for the current host
+    - name: End the play for hosts
+      meta: end_host

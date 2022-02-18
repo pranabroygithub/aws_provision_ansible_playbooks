@@ -1,0 +1,52 @@
+---
+- block:
+# This task will provision Ec2 security group with user inputs present in defaults/main.yaml file
+# Providing Rules for the security group
+# storing the Output of the resource created into a variable. 
+    - name: example ec2 group
+      ec2_group:
+        name: "{{var_security_group_name}}"
+        description: "{{ var_security_group_description }}"
+        vpc_id: "{{ var_resource_output.vpc.id }}"
+        region: "{{var_vpc_region}}"
+        tags: "{{ var_security_group_tags}}"
+        aws_access_key: "{{ aws_access_key_id }}" 
+        aws_secret_key: "{{ aws_secret_key_id }}"
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all on port 80
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 10.0.0.0/8
+            rule_desc: allow on port 22
+        rules_egress:
+          - proto: tcp
+            from_port: 0
+            to_port: 0
+            cidr_ip: 0.0.0.0/0
+            cidr_ipv6: 64:ff9b::/96
+            rule_desc: allow all ports to all
+      register: var_security_group_resource_output
+
+# Task to Display the output of the resource created into the console
+    - name : display the output of the resource_output
+      debug: msg="{{ var_security_group_resource_output }}"
+
+# Assigning security group id into a variable
+    - name: create var_ec2_instance_group_id variable and assign security group id to it
+      set_fact:
+        var_ec2_instance_group_id: "{{ var_security_group_resource_output.group_id }}"
+
+   
+# Handling Error by displaying error message
+  rescue:
+    - name: Display Error message
+      debug: msg="creating AWS Ec2 security group failed"
+
+# Stopping the play for the current host
+    - name: End the play for hosts
+      meta: end_host

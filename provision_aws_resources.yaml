@@ -1,0 +1,13 @@
+---
+# Play to provision Vpc, subnet, security group and Ec2 instance using roles
+  - name: create a VPC,Vpc subnet, Ec2 Security group and an EC2 instance
+    hosts: localhost
+    roles:
+# Role for provisioning AWS vpc resource
+    - roles/provision_aws_vpc
+# Role for provisioning AWS vpc subnet resource
+    - roles/provision_aws_vpc_subnet
+# Role for provisioning AWS Ec2 Security group resource
+    - roles/provision_aws_ec2_security_group
+# Role for provisioning AWS Ec2 instance resource
+    - roles/provision_aws_ec2_instance
